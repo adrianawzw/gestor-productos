@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
     }
 
     /* errores generales */
-    @ExceptionHandler(Exception.class)
+    //@ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleGeneral(Exception ex) {
         ex.printStackTrace(); //CLAVE
         return buildError(

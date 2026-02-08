@@ -53,7 +53,7 @@ public class ProductoController {
     }
     
     @GetMapping("/buscar/nombre/{nombre}")
-    public ResponseEntity<ProductoDTO> buscarPorNombre(@RequestParam String nombre) {
+    public ResponseEntity<ProductoDTO> buscarPorNombre(@PathVariable String nombre) {
         return productoService.buscarPorNombre(nombre)
             .map(ResponseEntity::ok)
             .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado"));
