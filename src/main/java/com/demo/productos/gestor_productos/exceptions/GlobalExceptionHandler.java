@@ -12,34 +12,37 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    
-    /*404*/
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<?> handleNotFound(ResourceNotFoundException ex){
-        return buildError(HttpStatus.NOT_FOUND, ex.getMessage());
-    }   
 
-    /*400*/
+    /* 404 */
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<?> handleNotFound(ResourceNotFoundException ex) {
+        return buildError(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    /* 400 */
     @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<?> handleBadRequest(BadRequestException ex){
+    public ResponseEntity<?> handleBadRequest(BadRequestException ex) {
         return buildError(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
-    /*validaciones DTO*/
+    /* validaciones DTO */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handleValidation(MethodArgumentNotValidException ex){
+    public ResponseEntity<?> handleValidation(MethodArgumentNotValidException ex) {
         Map<String, String> errores = new HashMap<>();
 
         ex.getBindingResult().getFieldErrors()
-           .forEach(er -> errores.put(er.getField(), er.getDefaultMessage()));
+                .forEach(er -> errores.put(er.getField(), er.getDefaultMessage()));
 
         return ResponseEntity.badRequest().body(errores);
     }
 
-    /*errores generales*/
+    /* errores generales */
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> handleGeneral(Exception ex){
-        return buildError(HttpStatus.INTERNAL_SERVER_ERROR, "Error interno del servidor");
+    public ResponseEntity<?> handleGeneral(Exception ex) {
+        ex.printStackTrace(); //CLAVE
+        return buildError(
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                ex.getClass().getSimpleName() + ": " + ex.getMessage());
     }
 
     private ResponseEntity<?> buildError(HttpStatus status, String mensaje) {
