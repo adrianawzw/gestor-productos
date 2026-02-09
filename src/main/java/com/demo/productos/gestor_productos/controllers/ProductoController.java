@@ -34,11 +34,11 @@ public class ProductoController {
     @Autowired
     private ProductoService productoService;
 
-    @PostMapping
+    @PostMapping("/registrar")
     public ResponseEntity<ProductoDTO> registrarProducto(@Valid @RequestBody ProductoCreateDTO dto) {
-        System.out.println("Recibiendo solicitud POST para registrar producto: " + dto.getNombreProducto());
+        System.out.println("POST REGISTRAR OK");
         ProductoDTO productoNuevo = productoService.registrarProducto(dto);
-        return new ResponseEntity<>(productoNuevo, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(productoNuevo);
     }
 
     @GetMapping()
