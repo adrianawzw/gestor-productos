@@ -34,7 +34,7 @@ public class ProductoController {
     @Autowired
     private ProductoService productoService;
 
-    @PostMapping("/registrar")
+    @PostMapping("/rregistrar-producto")
     public ResponseEntity<ProductoDTO> registrarProducto(@Valid @RequestBody ProductoCreateDTO dto) {
         System.out.println("Recibiendo solicitud POST para registrar producto: " + dto.getNombreProducto());
         ProductoDTO productoNuevo = productoService.registrarProducto(dto);
@@ -73,10 +73,12 @@ public class ProductoController {
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/estado/{idProducto}")
-    public ResponseEntity<ProductoDTO> cambiarEstado(@PathVariable Long idProducto,
-            @RequestParam EstadoProducto estadoProducto) {
-        return ResponseEntity.ok(productoService.cambiarEstadoProducto(idProducto, estadoProducto));
+    @PatchMapping("/{idProducto}/estado")
+    public ResponseEntity<ProductoDTO> cambiarEstado(
+            @PathVariable Long idProducto,
+            @RequestParam EstadoProducto estado) {
+        return ResponseEntity.ok(
+                productoService.cambiarEstadoProducto(idProducto, estado));
     }
 
     @GetMapping("/estado/{estado}")
