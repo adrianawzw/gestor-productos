@@ -36,6 +36,7 @@ public class ProductoController {
 
     @PostMapping("/registrar")
     public ResponseEntity<ProductoDTO> registrarProducto(@Valid @RequestBody ProductoCreateDTO dto) {
+        System.out.println("Recibiendo solicitud POST para registrar producto: " + dto.getNombreProducto());
         ProductoDTO productoNuevo = productoService.registrarProducto(dto);
         return new ResponseEntity<>(productoNuevo, HttpStatus.CREATED);
     }
@@ -44,35 +45,37 @@ public class ProductoController {
     public ResponseEntity<List<ProductoDTO>> listarProductos() {
         return ResponseEntity.ok(productoService.listarProductos());
     }
-    
+
     @GetMapping("/buscar/id/{idProducto}")
     public ResponseEntity<ProductoDTO> buscarPorId(@PathVariable Long idProducto) {
         return productoService.buscarPorId(idProducto)
-            .map(ResponseEntity::ok)
-            .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado"));
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado"));
     }
-    
+
     @GetMapping("/buscar/nombre/{nombre}")
     public ResponseEntity<ProductoDTO> buscarPorNombre(@PathVariable String nombre) {
         return productoService.buscarPorNombre(nombre)
-            .map(ResponseEntity::ok)
-            .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado"));
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado"));
     }
 
     @PutMapping("/actualizar/{idProducto}")
-    public ResponseEntity<ProductoDTO> actualizarProducto(@PathVariable Long idProducto, @Valid @RequestBody ProductoCreateDTO dto) {
+    public ResponseEntity<ProductoDTO> actualizarProducto(@PathVariable Long idProducto,
+            @Valid @RequestBody ProductoCreateDTO dto) {
         ProductoDTO actualizado = productoService.actualizarProducto(idProducto, dto);
         return ResponseEntity.ok(actualizado);
     }
-    
+
     @DeleteMapping("/{idProducto}")
-    public ResponseEntity<Void> eliminarProducto(@PathVariable Long idProducto){
+    public ResponseEntity<Void> eliminarProducto(@PathVariable Long idProducto) {
         productoService.eliminarProducto(idProducto);
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/estado/{idProducto}")
-    public ResponseEntity<ProductoDTO> cambiarEstado(@PathVariable Long idProducto, @RequestParam EstadoProducto estadoProducto){
+    public ResponseEntity<ProductoDTO> cambiarEstado(@PathVariable Long idProducto,
+            @RequestParam EstadoProducto estadoProducto) {
         return ResponseEntity.ok(productoService.cambiarEstadoProducto(idProducto, estadoProducto));
     }
 
@@ -80,5 +83,5 @@ public class ProductoController {
     public ResponseEntity<List<ProductoDTO>> listarPorEstado(@PathVariable EstadoProducto estado) {
         return ResponseEntity.ok(productoService.obtenerProductosPorEstado(estado));
     }
-    
+
 }
